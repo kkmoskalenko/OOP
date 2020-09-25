@@ -4,40 +4,16 @@ public class Heapsort {
     public static void sort(int[] arr) {
         int n = arr.length;
 
-        int k = 0;
-        int[] heap = new int[n];
-
-        for (int i = 0; i < n; i++) {
-            // Add
-            heap[k++] = arr[i];
-            siftUp(heap, k - 1);
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            siftDown(arr, i, n);
         }
 
-        for (int i = 0; i < n; i++) {
-            arr[i] = heap[0];
+        for (int i = n - 1; i > 0; i--) {
+            int tmp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = tmp;
 
-            // Extract min
-            int tmp = heap[0];
-            heap[0] = heap[k - 1];
-            heap[k - 1] = tmp;
-
-            k--;
-            siftDown(heap, 0, k);
-        }
-    }
-
-    private static void siftUp(int[] heap, int v) {
-        if (v == 0) {
-            return;
-        }
-
-        int father = (v - 1) / 2;
-        if (heap[v] < heap[father]) {
-            int tmp = heap[v];
-            heap[v] = heap[father];
-            heap[father] = tmp;
-
-            siftUp(heap, father);
+            siftDown(arr, 0, i);
         }
     }
 
@@ -46,11 +22,11 @@ public class Heapsort {
         int r = 2 * v + 2;
 
         if (l < n && r < n) {
-            if (heap[v] <= heap[l] && heap[v] <= heap[r]) {
+            if (heap[v] >= heap[l] && heap[v] >= heap[r]) {
                 return;
             }
 
-            if (heap[l] < heap[r]) {
+            if (heap[l] > heap[r]) {
                 int tmp = heap[v];
                 heap[v] = heap[l];
                 heap[l] = tmp;
@@ -63,11 +39,11 @@ public class Heapsort {
 
                 siftDown(heap, r, n);
             }
-        } else if (l < n && heap[v] > heap[l]) {
+        } else if (l < n && heap[v] < heap[l]) {
             int tmp = heap[v];
             heap[v] = heap[l];
             heap[l] = tmp;
-        } else if (r < n && heap[v] > heap[r]) {
+        } else if (r < n && heap[v] < heap[r]) {
             int tmp = heap[v];
             heap[v] = heap[r];
             heap[r] = tmp;
