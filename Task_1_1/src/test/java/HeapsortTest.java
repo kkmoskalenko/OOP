@@ -16,6 +16,30 @@ public class HeapsortTest extends TestCase {
         Assert.assertArrayEquals(arr, res);
     }
 
+    public void testSortEmpty() {
+        int[] arr = {};
+        int[] res = {};
+
+        Heapsort.sort(arr);
+        Assert.assertArrayEquals(arr, res);
+    }
+
+    public void testSortNegative() {
+        int[] arr = {5, -4, 3, -2, 1};
+        int[] res = {-4, -2, 1, 3, 5};
+
+        Heapsort.sort(arr);
+        Assert.assertArrayEquals(arr, res);
+    }
+
+    public void testSortSorted() {
+        int[] arr = {1, 2, 3, 4, 5};
+        int[] res = {1, 2, 3, 4, 5};
+
+        Heapsort.sort(arr);
+        Assert.assertArrayEquals(arr, res);
+    }
+
     public void testSortRandom() {
         Random rand = new Random();
 
