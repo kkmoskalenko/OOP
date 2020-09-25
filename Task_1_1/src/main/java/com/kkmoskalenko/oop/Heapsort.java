@@ -27,7 +27,9 @@ public class Heapsort {
     }
 
     private static void siftUp(int[] heap, int v) {
-        if (v == 0) return;
+        if (v == 0) {
+            return;
+        }
 
         int father = (v - 1) / 2;
         if (heap[v] < heap[father]) {
@@ -44,7 +46,9 @@ public class Heapsort {
         int r = 2 * v + 2;
 
         if (l < n && r < n) {
-            if (heap[v] <= heap[l] && heap[v] <= heap[r]) return;
+            if (heap[v] <= heap[l] && heap[v] <= heap[r]) {
+                return;
+            }
 
             if (heap[l] < heap[r]) {
                 int tmp = heap[v];
