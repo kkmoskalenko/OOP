@@ -1,3 +1,5 @@
+package com.kkmoskalenko.oop;
+
 public class Heapsort {
     public static void sort(int[] arr) {
         int n = arr.length;
