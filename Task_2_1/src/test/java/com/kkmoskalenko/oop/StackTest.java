@@ -1,5 +1,6 @@
 package com.kkmoskalenko.oop;
 
+import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
@@ -14,17 +15,20 @@ public class StackTest extends TestCase {
 
         assertEquals(2, stack.count());
 
-        elem = stack.pop();
+        elem = stack.pop().orElseThrow(
+                AssertionFailedError::new);
         assertEquals(456, elem);
         assertEquals(1, stack.count());
 
         stack.push(789);
         assertEquals(2, stack.count());
 
-        elem = stack.pop();
+        elem = stack.pop().orElseThrow(
+                AssertionFailedError::new);
         assertEquals(789, elem);
 
-        elem = stack.pop();
+        elem = stack.pop().orElseThrow(
+                AssertionFailedError::new);
         assertEquals(123, elem);
 
         assertEquals(0, stack.count());
@@ -42,11 +46,13 @@ public class StackTest extends TestCase {
 
         assertEquals(2, stack.count());
 
-        elem = stack.pop();
+        elem = stack.pop().orElseThrow(
+                AssertionFailedError::new);
         assertEquals("world", elem);
         assertEquals(1, stack.count());
 
-        elem = stack.pop();
+        elem = stack.pop().orElseThrow(
+                AssertionFailedError::new);
         assertEquals("hello", elem);
         assertEquals(0, stack.count());
     }

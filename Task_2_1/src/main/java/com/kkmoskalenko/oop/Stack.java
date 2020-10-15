@@ -2,6 +2,7 @@ package com.kkmoskalenko.oop;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Optional;
 
 public class Stack<T> implements Iterable<T> {
     @SuppressWarnings("unchecked")
@@ -19,12 +20,12 @@ public class Stack<T> implements Iterable<T> {
         stack[count++] = item;
     }
 
-    public T pop() {
+    public Optional<T> pop() {
         if (count == 0) {
-            return null;
+            return Optional.empty();
         }
 
-        return stack[--count];
+        return Optional.of(stack[--count]);
     }
 
     public int count() {
