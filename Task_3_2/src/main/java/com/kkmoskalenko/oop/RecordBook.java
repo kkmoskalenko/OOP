@@ -3,21 +3,26 @@ package com.kkmoskalenko.oop;
 import static java.lang.Integer.min;
 
 public class RecordBook {
-    public final int studentID;
+    private final int studentID;
 
-    public final int educationDuration;
-    public final Semester[] semesters;
-    private int graduationWorkGrade;
+    private final Semester[] semesters;
+    private int graduationWorkGrade = 0;
 
-    public RecordBook(int studentID, int educationDuration) {
-        if (educationDuration < 1) {
-            throw new RuntimeException("The education duration must be positive.");
-        }
-
+    public RecordBook(int studentID, Semester[] semesters) {
         this.studentID = studentID;
-        this.educationDuration = educationDuration;
-        this.semesters = new Semester[educationDuration];
-        graduationWorkGrade = 0;
+        this.semesters = semesters;
+    }
+
+    public int getStudentID() {
+        return studentID;
+    }
+
+    public int getEducationDuration() {
+        return semesters.length;
+    }
+
+    public Semester[] getSemesters() {
+        return semesters;
     }
 
     public int getGraduationWorkGrade() {

@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import static java.lang.Integer.min;
 
 public class Semester {
-    public final ArrayList<Course> courses;
+    private final ArrayList<Course> courses = new ArrayList<>();
 
-    public Semester() {
-        this.courses = new ArrayList<>();
+    public ArrayList<Course> getCourses() {
+        return courses;
+    }
+
+    public void addCourse(Course course) {
+        courses.add(course);
     }
 
     public int gradedCoursesCount() {

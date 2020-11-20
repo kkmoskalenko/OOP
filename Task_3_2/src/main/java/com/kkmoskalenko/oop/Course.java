@@ -1,7 +1,7 @@
 package com.kkmoskalenko.oop;
 
 public class Course {
-    final String name;
+    private final String name;
     private Integer grade;
 
     public Course(String name) {
@@ -14,6 +14,10 @@ public class Course {
 
         this.name = name;
         this.grade = grade;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public boolean hasGrade() {
