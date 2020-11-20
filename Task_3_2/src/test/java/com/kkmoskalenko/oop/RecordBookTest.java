@@ -23,10 +23,10 @@ public class RecordBookTest extends TestCase {
     }
 
     public void testRecordBook2() {
-        book.setGraduationWorkGrade(4);
+        book.setGraduationWorkGrade(Grade.GOOD);
         assertFalse(book.appliesForRedDiploma());
 
-        book.setGraduationWorkGrade(5);
+        book.setGraduationWorkGrade(Grade.EXCELLENT);
         assertTrue(book.appliesForRedDiploma());
     }
 

@@ -6,7 +6,7 @@ public class RecordBook {
     private final int studentID;
 
     private final Semester[] semesters;
-    private int graduationWorkGrade = 0;
+    private Grade graduationWorkGrade = Grade.UNDEFINED;
 
     public RecordBook(int studentID, Semester[] semesters) {
         this.studentID = studentID;
@@ -25,12 +25,11 @@ public class RecordBook {
         return semesters;
     }
 
-    public int getGraduationWorkGrade() {
+    public Grade getGraduationWorkGrade() {
         return graduationWorkGrade;
     }
 
-    public void setGraduationWorkGrade(int grade) {
-        Course.validateGrade(grade);
+    public void setGraduationWorkGrade(Grade grade) {
         this.graduationWorkGrade = grade;
     }
 
@@ -56,8 +55,9 @@ public class RecordBook {
     }
 
     public boolean appliesForRedDiploma() {
-        return (excellentGradesPercent() >= 0.75) &&
-                (minGrade() > 3) && (graduationWorkGrade == 5);
+        return (excellentGradesPercent() >= 0.75) && (minGrade() > 3) && (
+                graduationWorkGrade == Grade.UNDEFINED ||
+                        graduationWorkGrade == Grade.EXCELLENT);
     }
 
     private double excellentGradesPercent() {

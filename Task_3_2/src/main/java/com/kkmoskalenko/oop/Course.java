@@ -2,18 +2,16 @@ package com.kkmoskalenko.oop;
 
 public class Course {
     private final String name;
-    private Integer grade;
+    private Grade grade;
 
     public Course(String name) {
         this.name = name;
-        this.grade = null;
+        this.grade = Grade.UNDEFINED;
     }
 
     public Course(String name, int grade) {
-        validateGrade(grade);
-
         this.name = name;
-        this.grade = grade;
+        this.grade = Grade.fromRawValue(grade);
     }
 
     public String getName() {
@@ -21,10 +19,10 @@ public class Course {
     }
 
     public boolean hasGrade() {
-        return grade != null;
+        return grade != null && grade != Grade.UNDEFINED;
     }
 
-    public int getGrade() {
+    public Grade getGrade() {
         if (!hasGrade()) {
             throw new RuntimeException("The grade is not specified");
         }
@@ -32,14 +30,7 @@ public class Course {
         return grade;
     }
 
-    public void setGrade(int grade) {
-        validateGrade(grade);
+    public void setGrade(Grade grade) {
         this.grade = grade;
-    }
-
-    public static void validateGrade(int grade) {
-        if (grade < 1 || grade > 5) {
-            throw new RuntimeException("Invalid grade");
-        }
     }
 }

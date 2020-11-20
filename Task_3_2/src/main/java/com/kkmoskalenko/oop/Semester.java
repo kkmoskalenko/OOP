@@ -29,7 +29,7 @@ public class Semester {
     public int excellentGradedCoursesCount() {
         int count = 0;
         for (Course course : courses) {
-            if (course.hasGrade() && course.getGrade() == 5) {
+            if (course.hasGrade() && course.getGrade() == Grade.EXCELLENT) {
                 count++;
             }
         }
@@ -41,7 +41,7 @@ public class Semester {
         int sum = 0;
         for (Course course : courses) {
             if (course.hasGrade()) {
-                sum += course.getGrade();
+                sum += course.getGrade().ordinal();
             }
         }
 
@@ -52,7 +52,7 @@ public class Semester {
         int minGrade = 5;
         for (Course course : courses) {
             if (course.hasGrade()) {
-                int grade = course.getGrade();
+                int grade = course.getGrade().ordinal();
                 minGrade = min(grade, minGrade);
             }
         }
