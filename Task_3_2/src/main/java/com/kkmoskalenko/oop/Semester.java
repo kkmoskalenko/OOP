@@ -2,8 +2,6 @@ package com.kkmoskalenko.oop;
 
 import java.util.ArrayList;
 
-import static java.lang.Integer.min;
-
 public class Semester {
     private final ArrayList<Course> courses = new ArrayList<>();
 
@@ -16,48 +14,24 @@ public class Semester {
     }
 
     public int gradedCoursesCount() {
-        int count = 0;
-        for (Course course : courses) {
-            if (course.hasGrade()) {
-                count++;
-            }
-        }
-
-        return count;
+        return (int) courses.stream().filter(Course::hasGrade).count();
     }
 
     public int excellentGradedCoursesCount() {
-        int count = 0;
-        for (Course course : courses) {
-            if (course.hasGrade() && course.getGrade() == Grade.EXCELLENT) {
-                count++;
-            }
-        }
-
-        return count;
+        return (int) courses.stream().filter(
+                course -> course.hasGrade() &&
+                        course.getGrade() == Grade.EXCELLENT
+        ).count();
     }
 
     public int gradedCoursesSum() {
-        int sum = 0;
-        for (Course course : courses) {
-            if (course.hasGrade()) {
-                sum += course.getGrade().ordinal();
-            }
-        }
-
-        return sum;
+        return courses.stream().filter(Course::hasGrade).mapToInt(
+                course -> course.getGrade().ordinal()).sum();
     }
 
     public int minGrade() {
-        int minGrade = 5;
-        for (Course course : courses) {
-            if (course.hasGrade()) {
-                int grade = course.getGrade().ordinal();
-                minGrade = min(grade, minGrade);
-            }
-        }
-
-        return minGrade;
+        return courses.stream().filter(Course::hasGrade).mapToInt(
+                course -> course.getGrade().ordinal()).min().orElse(5);
     }
 
     public boolean appliesForIncreasedStipend() {

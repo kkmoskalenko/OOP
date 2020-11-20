@@ -1,6 +1,6 @@
 package com.kkmoskalenko.oop;
 
-import static java.lang.Integer.min;
+import java.util.Arrays;
 
 public class RecordBook {
     private final int studentID;
@@ -82,16 +82,7 @@ public class RecordBook {
     }
 
     private int minGrade() {
-        int minGrade = 5;
-
-        for (Semester sem : semesters) {
-            if (sem == null) {
-                continue;
-            }
-
-            minGrade = min(minGrade, sem.minGrade());
-        }
-
-        return minGrade;
+        return Arrays.stream(semesters).mapToInt(
+                Semester::minGrade).min().orElse(5);
     }
 }
