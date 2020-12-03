@@ -1,9 +1,9 @@
 package com.kkmoskalenko.oop;
 
 import com.google.gson.Gson;
+import org.apache.commons.cli.*;
 
 import java.io.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -24,7 +24,7 @@ public class Notebook {
         try (Writer writer = new FileWriter(filename)) {
             gson.toJson(notes, writer);
         } catch (IOException exception) {
-            System.out.println("Failed to save the notes file: "
+            System.err.println("Failed to save the notes file: "
                     + exception.getLocalizedMessage());
         }
     }
@@ -44,7 +44,7 @@ public class Notebook {
         if (removed) {
             save(notes);
         } else {
-            System.out.println("Failed to remove the note");
+            System.err.println("Failed to find the note to remove");
         }
     }
 
@@ -68,55 +68,51 @@ public class Notebook {
     }
 
     public static void main(String[] args) {
-        if (args.length < 1) {
-            System.out.println("No arguments specified");
-            System.exit(1);
-        }
+        DefaultParser parser = new DefaultParser();
 
-        switch (args[0]) {
-            case "add":
-                if (args.length == 3) {
-                    add(new Note(args[1], args[2], new Date()));
-                    break;
-                } else {
-                    System.out.println("Invalid arguments");
-                    System.exit(1);
+        // A group of mutually exclusive options
+        OptionGroup optionGroup = new OptionGroup();
+        optionGroup.addOption(new Option("add", false, "Adds a new note"));
+        optionGroup.addOption(new Option("rm", true, "Removes all notes with the specified name"));
+        optionGroup.addOption(new Option("show", false, "Prints a list of notes"));
+        optionGroup.setRequired(true);
+
+        Options options = new Options();
+        options.addOptionGroup(optionGroup);
+
+        try {
+            CommandLine commandLine = parser.parse(options, args);
+            String[] positionalArgs = commandLine.getArgs();
+
+            if (commandLine.hasOption("add")) {
+                if (positionalArgs.length != 2) {
+                    throw new RuntimeException("The 'add' option must be used with 2 arguments");
                 }
 
-            case "rm":
-                if (args.length == 2) {
-                    remove(args[1]);
-                    break;
-                } else {
-                    System.out.println("Invalid arguments");
-                    System.exit(1);
-                }
+                add(new Note(positionalArgs[0], positionalArgs[1], new Date()));
+            }
 
-            case "show":
-                if (args.length == 1) {
+            if (commandLine.hasOption("rm")) {
+                remove(commandLine.getOptionValue("rm"));
+            }
+
+            if (commandLine.hasOption("show")) {
+                if (positionalArgs.length == 0) {
                     show();
-                } else if (args.length >= 4) {
+                } else if (positionalArgs.length >= 2) {
                     SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-                    String[] keywords = Arrays.copyOfRange(args, 3, args.length);
+                    String[] keywords = Arrays.copyOfRange(positionalArgs, 2, positionalArgs.length);
 
-                    try {
-                        Date start = format.parse(args[1]);
-                        Date end = format.parse(args[2]);
+                    Date start = format.parse(positionalArgs[0]);
+                    Date end = format.parse(positionalArgs[1]);
 
-                        show(start, end, keywords);
-                    } catch (ParseException e) {
-                        System.out.println(e.getLocalizedMessage());
-                        System.exit(1);
-                    }
+                    show(start, end, keywords);
                 } else {
-                    System.out.println("Invalid arguments");
-                    System.exit(1);
+                    throw new RuntimeException("The 'show' option must be used with 0 or 2+ arguments");
                 }
-                break;
-
-            default:
-                throw new RuntimeException("Invalid command");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 }

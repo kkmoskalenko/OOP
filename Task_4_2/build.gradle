@@ -14,4 +14,5 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
     implementation 'com.google.code.gson:gson:2.8.6'
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
 }
