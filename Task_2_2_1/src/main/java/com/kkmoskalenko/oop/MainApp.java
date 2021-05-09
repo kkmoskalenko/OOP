@@ -18,7 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class MainApp extends Application {
+public final class MainApp extends Application {
     private final Board board = new Board();
 
     private final Group root = new Group();
@@ -29,8 +29,17 @@ public class MainApp extends Application {
     private AnimationTimer timer;
     private KeyEvent lastPressedKey;
 
+    // JavaFX UI constants
+    private static final int SCORE_LABEL_FONT_SIZE = 20;
+    private static final int SCORE_LABEL_PADDING_INSETS = 8;
+    private static final int GAME_OVER_SCREEN_SPACING = 15;
+    private static final double GAME_OVER_SCREEN_BACKGROUND_OPACITY = 0.66;
+    private static final int GAME_OVER_LABEL_FONT_SIZE = 36;
+    private static final int GAME_OVER_BUTTON_FONT_SIZE = 16;
+    private static final int GAME_OVER_BUTTON_PADDING_INSETS = 10;
+
     @Override
-    public void start(Stage stage) {
+    public void start(final Stage stage) {
         Scene scene = new Scene(root, Color.WHITESMOKE);
 
         root.getChildren().add(canvas);
@@ -39,8 +48,8 @@ public class MainApp extends Application {
         canvas.setWidth(Board.WIDTH * Board.CELL_SIZE);
         canvas.setHeight(Board.HEIGHT * Board.CELL_SIZE);
 
-        label.setFont(Font.font("Courier", 20));
-        label.setPadding(new Insets(8));
+        label.setFont(Font.font("Courier", SCORE_LABEL_FONT_SIZE));
+        label.setPadding(new Insets(SCORE_LABEL_PADDING_INSETS));
 
         stage.setScene(scene);
         stage.setTitle("Snake");
@@ -56,11 +65,11 @@ public class MainApp extends Application {
 
     private void setupTimer() {
         timer = new AnimationTimer() {
-            private final static int DRAWING_DELAY = 140 * 1_000_000;
-            private long lastUpdate = 0;
+            private static final int DRAWING_DELAY = 140 * 1_000_000;
+            private long lastUpdate;
 
             @Override
-            public void handle(long now) {
+            public void handle(final long now) {
                 if (now - lastUpdate < DRAWING_DELAY) {
                     return;
                 }
@@ -84,23 +93,23 @@ public class MainApp extends Application {
     }
 
     private void setupGameOverUI() {
-        gameOverUI.setSpacing(15);
+        gameOverUI.setSpacing(GAME_OVER_SCREEN_SPACING);
         gameOverUI.setAlignment(Pos.CENTER);
         gameOverUI.setPrefWidth(canvas.getWidth());
         gameOverUI.setPrefHeight(canvas.getHeight());
         gameOverUI.setBackground(new Background(new BackgroundFill(
-                Color.grayRgb(0, 0.66), null, null
+                Color.grayRgb(0, GAME_OVER_SCREEN_BACKGROUND_OPACITY), null, null
         )));
         gameOverUI.setVisible(false);
 
-        Label label = new Label("Game over");
-        label.setFont(Font.font("Courier", FontWeight.BOLD, 36));
-        label.setTextFill(Color.INDIANRED);
+        Label gameOverLabel = new Label("Game over");
+        gameOverLabel.setFont(Font.font("Courier", FontWeight.BOLD, GAME_OVER_LABEL_FONT_SIZE));
+        gameOverLabel.setTextFill(Color.INDIANRED);
 
-        Button button = new Button("Retry");
-        button.setFont(Font.font("Courier", 16));
-        button.setPadding(new Insets(10));
-        button.setOnAction(event -> {
+        Button retryButton = new Button("Retry");
+        retryButton.setFont(Font.font("Courier", GAME_OVER_BUTTON_FONT_SIZE));
+        retryButton.setPadding(new Insets(GAME_OVER_BUTTON_PADDING_INSETS));
+        retryButton.setOnAction(event -> {
             lastPressedKey = null;
             gameOverUI.setVisible(false);
 
@@ -108,7 +117,7 @@ public class MainApp extends Application {
             timer.start();
         });
 
-        gameOverUI.getChildren().addAll(label, button);
+        gameOverUI.getChildren().addAll(gameOverLabel, retryButton);
         root.getChildren().add(gameOverUI);
     }
 }

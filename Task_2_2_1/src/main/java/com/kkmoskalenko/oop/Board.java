@@ -5,12 +5,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
-import static com.kkmoskalenko.oop.Snake.Direction.*;
-
 class Board {
-    final static int WIDTH = 20;
-    final static int HEIGHT = 20;
-    final static int CELL_SIZE = 20;
+    static final int WIDTH = 20;
+    static final int HEIGHT = 20;
+    static final int CELL_SIZE = 20;
 
     private boolean inGame = true;
 
@@ -35,7 +33,7 @@ class Board {
         snake.move();
     }
 
-    void draw(Canvas canvas) {
+    void draw(final Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
@@ -44,7 +42,7 @@ class Board {
         snake.draw(gc);
     }
 
-    private void drawGrid(GraphicsContext gc) {
+    private static void drawGrid(final GraphicsContext gc) {
         gc.setStroke(Color.LIGHTGRAY);
 
         int width = WIDTH * CELL_SIZE;
@@ -59,16 +57,16 @@ class Board {
         }
     }
 
-    void handleEvent(KeyEvent key) {
+    void handleEvent(final KeyEvent key) {
         if (key == null) {
             return;
         }
 
         switch (key.getCode()) {
-            case W -> snake.changeDirection(UP);
-            case A -> snake.changeDirection(LEFT);
-            case S -> snake.changeDirection(DOWN);
-            case D -> snake.changeDirection(RIGHT);
+            case W -> snake.changeDirection(Snake.Direction.UP);
+            case A -> snake.changeDirection(Snake.Direction.LEFT);
+            case S -> snake.changeDirection(Snake.Direction.DOWN);
+            case D -> snake.changeDirection(Snake.Direction.RIGHT);
         }
     }
 

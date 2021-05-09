@@ -3,18 +3,20 @@ package com.kkmoskalenko.oop;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 class Apple {
-    private final static Random random = new Random();
-    private final int x, y;
+    private final int x;
+    private final int y;
 
     Apple() {
+        SecureRandom random = new SecureRandom();
+
         x = random.nextInt(Board.WIDTH);
         y = random.nextInt(Board.HEIGHT);
     }
 
-    void draw(GraphicsContext gc) {
+    void draw(final GraphicsContext gc) {
         int size = Board.CELL_SIZE;
 
         gc.setFill(Color.FIREBRICK);

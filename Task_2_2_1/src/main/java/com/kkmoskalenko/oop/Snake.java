@@ -7,14 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Snake {
-    final static int INITIAL_LENGTH = 3;
+    static final int INITIAL_LENGTH = 3;
 
     private final List<Joint> joints = new ArrayList<>();
     private Direction direction = Direction.RIGHT;
 
+    // Constants
+    private static final int INITIAL_POSITION = 5;
+    private static final int JOINTS_WITH_NO_COLLISION = 3;
+
     Snake() {
         for (int i = 0; i < INITIAL_LENGTH; i++) {
-            joints.add(new Joint(5 - i, 5));
+            joints.add(new Joint(INITIAL_POSITION - i, INITIAL_POSITION));
         }
     }
 
@@ -62,7 +66,7 @@ class Snake {
     }
 
     boolean checkCollision() {
-        for (int i = joints.size() - 1; i > 3; i--) {
+        for (int i = joints.size() - 1; i > JOINTS_WITH_NO_COLLISION; i--) {
             Joint head = joints.get(0);
             Joint joint = joints.get(i);
 
@@ -74,13 +78,13 @@ class Snake {
         return false;
     }
 
-    boolean checkCollision(Apple apple) {
+    boolean checkCollision(final Apple apple) {
         Joint head = joints.get(0);
-        return head.x == apple.getX() &&
-                head.y == apple.getY();
+        return head.x == apple.getX()
+                && head.y == apple.getY();
     }
 
-    void changeDirection(Direction newDirection) {
+    void changeDirection(final Direction newDirection) {
         switch (newDirection) {
             case UP -> {
                 if (direction != Direction.DOWN) {
@@ -105,7 +109,7 @@ class Snake {
         }
     }
 
-    void draw(GraphicsContext gc) {
+    void draw(final GraphicsContext gc) {
         for (int i = 0; i < joints.size(); i++) {
             Joint joint = joints.get(i);
             int size = Board.CELL_SIZE;
@@ -124,7 +128,8 @@ class Snake {
     }
 
     private static class Joint {
-        int x, y;
+        private int x;
+        private int y;
 
         Joint(int x, int y) {
             this.x = x;
