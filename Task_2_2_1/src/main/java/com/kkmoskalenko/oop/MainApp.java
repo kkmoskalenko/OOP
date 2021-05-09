@@ -33,7 +33,7 @@ public final class MainApp extends Application {
     private static final int SCORE_LABEL_FONT_SIZE = 20;
     private static final int SCORE_LABEL_PADDING_INSETS = 8;
     private static final int GAME_OVER_SCREEN_SPACING = 15;
-    private static final double GAME_OVER_SCREEN_BACKGROUND_OPACITY = 0.66;
+    private static final double GAME_OVER_BACKGROUND_OPACITY = 0.66;
     private static final int GAME_OVER_LABEL_FONT_SIZE = 36;
     private static final int GAME_OVER_BUTTON_FONT_SIZE = 16;
     private static final int GAME_OVER_BUTTON_PADDING_INSETS = 10;
@@ -98,12 +98,13 @@ public final class MainApp extends Application {
         gameOverUI.setPrefWidth(canvas.getWidth());
         gameOverUI.setPrefHeight(canvas.getHeight());
         gameOverUI.setBackground(new Background(new BackgroundFill(
-                Color.grayRgb(0, GAME_OVER_SCREEN_BACKGROUND_OPACITY), null, null
+                Color.grayRgb(0, GAME_OVER_BACKGROUND_OPACITY), null, null
         )));
         gameOverUI.setVisible(false);
 
         Label gameOverLabel = new Label("Game over");
-        gameOverLabel.setFont(Font.font("Courier", FontWeight.BOLD, GAME_OVER_LABEL_FONT_SIZE));
+        gameOverLabel.setFont(Font.font("Courier",
+                FontWeight.BOLD, GAME_OVER_LABEL_FONT_SIZE));
         gameOverLabel.setTextFill(Color.INDIANRED);
 
         Button retryButton = new Button("Retry");

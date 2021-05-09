@@ -131,7 +131,7 @@ class Snake {
         private int x;
         private int y;
 
-        Joint(int x, int y) {
+        Joint(final int x, final int y) {
             this.x = x;
             this.y = y;
         }
