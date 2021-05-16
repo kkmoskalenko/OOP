@@ -1,6 +1,6 @@
 package com.kkmoskalenko.oop;
 
-class Main {
+final class Main {
     private static final String WORKERS_FILENAME = "workers.json";
     private static final int STORAGE_CAPACITY = 4;
     private static final int ORDERS_COUNT = 20;
