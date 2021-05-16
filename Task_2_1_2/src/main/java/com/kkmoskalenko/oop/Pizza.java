@@ -6,7 +6,7 @@ class Pizza {
     private final Type type;
     private final Order order;
 
-    Pizza(Order order) {
+    Pizza(final Order order) {
         this.type = order.getPizzaType();
         this.order = order;
     }

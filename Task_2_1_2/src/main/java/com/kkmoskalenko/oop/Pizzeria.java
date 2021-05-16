@@ -3,7 +3,7 @@ package com.kkmoskalenko.oop;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Pizzeria {
+public final class Pizzeria {
     private static final Random RANDOM = new Random();
     private final int bakersCount;
     private final int deliverymenCount;
@@ -14,7 +14,11 @@ public class Pizzeria {
     private Boolean isPizzeriaOpened = false;
     private Boolean bakersStillWorking = false;
 
-    public Pizzeria(int bakerCount, int deliverymanCount, int storageCapacity) {
+    public Pizzeria(
+            final int bakerCount,
+            final int deliverymanCount,
+            final int storageCapacity
+    ) {
         if (bakerCount <= 0 || deliverymanCount <= 0 || storageCapacity <= 0) {
             throw new IllegalArgumentException(
                     "Number of workers and storage capacity must be positive"
@@ -31,7 +35,7 @@ public class Pizzeria {
         this.storage = new QueueContainer<>(storageCapacity);
     }
 
-    public void start(int ordersCount) {
+    public void start(final int ordersCount) {
         isPizzeriaOpened = true;
         bakersStillWorking = true;
 
@@ -60,7 +64,7 @@ public class Pizzeria {
         }
     }
 
-    private void generateOrders(int count) {
+    private void generateOrders(final int count) {
         for (int i = 0; i < count; i++) {
             Pizza.Type pizzaType = Pizza.Type.random();
             Order order = new Order(pizzaType);
@@ -98,7 +102,9 @@ public class Pizzeria {
         }
     }
 
-    private void log(Order order, String state, Thread thread) {
+    private void log(
+            final Order order, final String state, final Thread thread
+    ) {
         synchronized (System.out) {
             System.out.printf("ORDER #%-6d", order.getId());
             System.out.print("State: " + state);
@@ -116,7 +122,7 @@ public class Pizzeria {
 
         private final int cookingTime;
 
-        Baker(String name, int workExperience) {
+        Baker(final String name, final int workExperience) {
             if (workExperience < 0 || workExperience > MAX_EXPERIENCE) {
                 throw new IllegalArgumentException(
                         "Experience must be between 0 and " + MAX_EXPERIENCE
@@ -142,7 +148,7 @@ public class Pizzeria {
             }
         }
 
-        private Pizza cook(Order order) {
+        private Pizza cook(final Order order) {
             log(order, "start cooking", this);
 
             try {
@@ -155,7 +161,7 @@ public class Pizzeria {
             return new Pizza(order);
         }
 
-        private void store(Pizza pizza) {
+        private void store(final Pizza pizza) {
             storage.add(pizza);
             log(pizza.getOrder(), "put into storage", this);
         }
@@ -168,7 +174,7 @@ public class Pizzeria {
         private final int trunkCapacity;
         private final ArrayList<Pizza> trunk;
 
-        Deliveryman(String name, int trunkCapacity) {
+        Deliveryman(final String name, final int trunkCapacity) {
             if (trunkCapacity < 1) {
                 throw new IllegalArgumentException(
                         "The trunk must fit at least 1 pizza"
@@ -202,7 +208,7 @@ public class Pizzeria {
             }
         }
 
-        private void deliver(Pizza pizza) {
+        private void deliver(final Pizza pizza) {
             int deliveryTime = MIN_DELIVERY_TIME + RANDOM.nextInt(
                     MAX_DELIVERY_TIME - MIN_DELIVERY_TIME);
             try {

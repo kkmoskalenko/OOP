@@ -6,7 +6,7 @@ class Order {
     private final int id;
     private final Pizza.Type pizzaType;
 
-    public Order(Pizza.Type pizzaType) {
+    Order(final Pizza.Type pizzaType) {
         this.id = lastID++;
         this.pizzaType = pizzaType;
     }

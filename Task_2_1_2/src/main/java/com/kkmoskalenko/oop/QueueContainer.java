@@ -11,12 +11,12 @@ class QueueContainer<T> {
         this.queue = new ArrayDeque<>();
     }
 
-    QueueContainer(int capacity) {
+    QueueContainer(final int capacity) {
         this.capacity = capacity;
         this.queue = new ArrayDeque<>(capacity);
     }
 
-    synchronized void add(T object) {
+    synchronized void add(final T object) {
         while (capacity != null && queue.size() >= capacity) {
             try {
                 wait();
@@ -29,7 +29,7 @@ class QueueContainer<T> {
         notify();
     }
 
-    synchronized T get(boolean shouldExit) {
+    synchronized T get(final boolean shouldExit) {
         while (queue.isEmpty()) {
             try {
                 wait();
