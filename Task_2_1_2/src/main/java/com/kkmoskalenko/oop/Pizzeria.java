@@ -1,35 +1,31 @@
 package com.kkmoskalenko.oop;
 
+import com.google.gson.*;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Random;
 
 public final class Pizzeria {
     private static final Random RANDOM = new Random();
-    private final int bakersCount;
-    private final int deliverymenCount;
-    private final ArrayList<Baker> bakers;
-    private final ArrayList<Deliveryman> deliverymen;
+    private final String workersFilename;
     private final QueueContainer<Order> orders;
     private final QueueContainer<Pizza> storage;
+    private Baker[] bakers;
+    private Deliveryman[] deliverymen;
     private Boolean isPizzeriaOpened = false;
     private Boolean bakersStillWorking = false;
 
-    public Pizzeria(
-            final int bakerCount,
-            final int deliverymanCount,
-            final int storageCapacity
-    ) {
-        if (bakerCount <= 0 || deliverymanCount <= 0 || storageCapacity <= 0) {
+    public Pizzeria(final String workersFilename, final int storageCapacity) {
+        if (storageCapacity <= 0) {
             throw new IllegalArgumentException(
-                    "Number of workers and storage capacity must be positive"
+                    "Storage capacity must be positive"
             );
         }
 
-        this.bakersCount = bakerCount;
-        this.deliverymenCount = deliverymanCount;
-
-        this.bakers = new ArrayList<>(bakerCount);
-        this.deliverymen = new ArrayList<>(deliverymanCount);
+        this.workersFilename = workersFilename;
 
         this.orders = new QueueContainer<>();
         this.storage = new QueueContainer<>(storageCapacity);
@@ -50,17 +46,23 @@ public final class Pizzeria {
     }
 
     private void importWorkers() {
-        // TODO: Import workers from JSON
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(
+                Baker.class, new BakerDeserializer());
+        builder.registerTypeAdapter(
+                Deliveryman.class, new DeliverymanDeserializer());
+        Gson gson = builder.create();
 
-        for (int i = 1; i <= bakersCount; i++) {
-            String name = "Baker_" + i;
-            int experience = RANDOM.nextInt(100);
-            bakers.add(new Baker(name, experience));
-        }
+        try {
+            FileReader reader = new FileReader(workersFilename);
+            JsonObject obj = JsonParser.parseReader(reader).getAsJsonObject();
+            JsonElement bakersNode = obj.get("bakers");
+            JsonElement deliverymenNode = obj.get("deliverymen");
 
-        for (int i = 1; i <= deliverymenCount; i++) {
-            String name = "Deliveryman_" + i;
-            deliverymen.add(new Deliveryman(name, 3));
+            bakers = gson.fromJson(bakersNode, Baker[].class);
+            deliverymen = gson.fromJson(deliverymenNode, Deliveryman[].class);
+        } catch (FileNotFoundException e) {
+            System.err.println(e.getLocalizedMessage());
         }
     }
 
@@ -112,6 +114,40 @@ public final class Pizzeria {
                 System.out.print(" (thread: " + thread.getName() + ")");
             }
             System.out.println();
+        }
+    }
+
+    private final class BakerDeserializer
+            implements JsonDeserializer<Baker> {
+        private static final String NAME_PROPERTY = "name";
+        private static final String EXPERIENCE_PROPERTY = "experience";
+
+        @Override
+        public Baker deserialize(
+                final JsonElement json, final Type typeOfT,
+                final JsonDeserializationContext context
+        ) throws JsonParseException {
+            JsonObject object = json.getAsJsonObject();
+            String name = object.get(NAME_PROPERTY).getAsString();
+            int experience = object.get(EXPERIENCE_PROPERTY).getAsInt();
+            return new Baker(name, experience);
+        }
+    }
+
+    private final class DeliverymanDeserializer
+            implements JsonDeserializer<Deliveryman> {
+        private static final String NAME_PROPERTY = "name";
+        private static final String CAPACITY_PROPERTY = "trunkCapacity";
+
+        @Override
+        public Deliveryman deserialize(
+                final JsonElement json, final Type typeOfT,
+                final JsonDeserializationContext context
+        ) throws JsonParseException {
+            JsonObject object = json.getAsJsonObject();
+            String name = object.get(NAME_PROPERTY).getAsString();
+            int capacity = object.get(CAPACITY_PROPERTY).getAsInt();
+            return new Deliveryman(name, capacity);
         }
     }
 
