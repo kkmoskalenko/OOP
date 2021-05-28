@@ -125,28 +125,28 @@ public final class Pizzeria {
         int blockedOrderGets = orders.getBlockedGets();
         if (blockedOrderGets > 0) {
             System.out.println(
-                    "The bakers were unable to get a new order for " +
-                            blockedOrderGets + " times. Suggestion: " +
-                            "increase the number of orders."
+                    "The bakers were unable to get a new order for "
+                            + blockedOrderGets + " times. Suggestion: "
+                            + "increase the number of orders."
             );
         }
 
         int blockedStorageAdds = storage.getBlockedAdds();
         if (blockedStorageAdds > 0) {
             System.out.println(
-                    "The bakers were unable to store an order for " +
-                            blockedStorageAdds + " times. Suggestion: " +
-                            "increase the storage capacity or hire more " +
-                            "deliverymen."
+                    "The bakers were unable to store an order for "
+                            + blockedStorageAdds + " times. Suggestion: "
+                            + "increase the storage capacity or hire more "
+                            + "deliverymen."
             );
         }
 
         int blockedStorageGets = storage.getBlockedGets();
         if (blockedStorageGets > 0) {
             System.out.println(
-                    "The deliverymen were unable to get an order from the " +
-                            "storage for " + blockedOrderGets + " times. " +
-                            "Suggestion: increase the number of orders."
+                    "The deliverymen were unable to get an order from the "
+                            + "storage for " + blockedOrderGets + " times. "
+                            + "Suggestion: increase the number of orders."
             );
         }
     }
