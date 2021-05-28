@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 
 public class GreedySnake extends Snake {
     void move(final Apple apple) {
-        Joint head = joints.get(0);
+        Joint head = getHead();
 
         if (head.getX() != apple.getX()) {
             changeDirection(head.getX() < apple.getX()

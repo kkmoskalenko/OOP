@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 class Snake {
-    protected final List<Joint> joints = new ArrayList<>();
+    private final List<Joint> joints = new ArrayList<>();
     private Direction direction = Direction.RIGHT;
 
     // Constants
@@ -36,6 +36,10 @@ class Snake {
         return Color.FORESTGREEN;
     }
 
+    protected Joint getHead() {
+        return joints.get(0);
+    }
+
     void move() {
         for (int i = joints.size() - 1; i > 0; i--) {
             Joint curr = joints.get(i);
@@ -45,7 +49,7 @@ class Snake {
             curr.y = prev.y;
         }
 
-        Joint head = joints.get(0);
+        Joint head = getHead();
 
         switch (direction) {
             case UP -> {
@@ -81,7 +85,7 @@ class Snake {
 
     boolean checkCollision() {
         for (int i = joints.size() - 1; i > JOINTS_WITH_NO_COLLISION; i--) {
-            Joint head = joints.get(0);
+            Joint head = getHead();
             Joint joint = joints.get(i);
 
             if (head.x == joint.x && head.y == joint.y) {
@@ -93,7 +97,7 @@ class Snake {
     }
 
     boolean checkCollision(final Apple apple) {
-        Joint head = joints.get(0);
+        Joint head = getHead();
         return head.x == apple.getX()
                 && head.y == apple.getY();
     }
@@ -112,12 +116,10 @@ class Snake {
             }
 
             for (int i = 0; i < joints.size(); i++) {
-                Joint anotherHead = snake.joints.get(0);
+                Joint anotherHead = snake.getHead();
                 Joint joint = joints.get(i);
 
-                if (anotherHead.x == joint.x &&
-                        anotherHead.y == joint.y
-                ) {
+                if (anotherHead.x == joint.x && anotherHead.y == joint.y) {
                     if (i == 0) {
                         return true;
                     } else {
