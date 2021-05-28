@@ -38,12 +38,12 @@ public final class Pizzeria {
         this.storage = new QueueContainer<>(storageCapacity);
     }
 
-    public void start(final int ordersCount) {
+    public void start(final int ordersCount, final int maxDelay) {
         isPizzeriaOpened = true;
         bakersStillWorking = true;
 
         importWorkers();
-        generateOrders(ordersCount);
+        generateOrders(ordersCount, maxDelay);
 
         isPizzeriaOpened = false;
         releaseBakers();
@@ -73,13 +73,19 @@ public final class Pizzeria {
         }
     }
 
-    private void generateOrders(final int count) {
+    private void generateOrders(final int count, final int maxDelay) {
         for (int i = 0; i < count; i++) {
             Pizza.Type pizzaType = Pizza.Type.random();
             Order order = new Order(pizzaType);
 
             log(order, "received (pizza: " + pizzaType + ")", null);
             orders.add(order);
+
+            try {
+                Thread.sleep(RANDOM.nextInt(maxDelay));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -260,7 +266,10 @@ public final class Pizzeria {
                 e.printStackTrace();
             }
 
-            log(pizza.getOrder(), "delivered", this);
+            Order order = pizza.getOrder();
+            long time = order.getElapsedTime();
+
+            log(order, "delivered in " + time + " ms", this);
         }
     }
 }

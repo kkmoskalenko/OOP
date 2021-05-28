@@ -5,10 +5,12 @@ class Order {
 
     private final int id;
     private final Pizza.Type pizzaType;
+    private final long creationTime;
 
     Order(final Pizza.Type pizzaType) {
         this.id = lastID++;
         this.pizzaType = pizzaType;
+        this.creationTime = System.currentTimeMillis();
     }
 
     int getId() {
@@ -17,5 +19,10 @@ class Order {
 
     Pizza.Type getPizzaType() {
         return pizzaType;
+    }
+
+    long getElapsedTime() {
+        long now = System.currentTimeMillis();
+        return now - creationTime;
     }
 }
