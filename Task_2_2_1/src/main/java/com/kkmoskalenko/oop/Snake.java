@@ -5,20 +5,26 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 class Snake {
-    static final int INITIAL_LENGTH = 3;
-
     protected final List<Joint> joints = new ArrayList<>();
     private Direction direction = Direction.RIGHT;
 
     // Constants
-    private static final int INITIAL_POSITION = 5;
+    static final int INITIAL_LENGTH = 3;
     private static final int JOINTS_WITH_NO_COLLISION = 3;
 
     Snake() {
+        Random random = new Random();
+
+        int initialX = random.nextInt(
+                Board.WIDTH - INITIAL_LENGTH
+        ) + INITIAL_LENGTH;
+        int initialY = random.nextInt(Board.HEIGHT);
+
         for (int i = 0; i < INITIAL_LENGTH; i++) {
-            joints.add(new Joint(INITIAL_POSITION - i, INITIAL_POSITION));
+            joints.add(new Joint(initialX - i, initialY));
         }
     }
 
@@ -90,6 +96,39 @@ class Snake {
         Joint head = joints.get(0);
         return head.x == apple.getX()
                 && head.y == apple.getY();
+    }
+
+    /**
+     * Shortens the snake if its tail is bitten off
+     *
+     * @param otherSnakes List of snakes to check for collision.
+     *                    May include the snake itself.
+     * @return Whether the snake is dead after shortening
+     */
+    boolean handleBite(final Snake[] otherSnakes) {
+        for (Snake snake : otherSnakes) {
+            if (snake == this) {
+                continue;
+            }
+
+            for (int i = 0; i < joints.size(); i++) {
+                Joint anotherHead = snake.joints.get(0);
+                Joint joint = joints.get(i);
+
+                if (anotherHead.x == joint.x &&
+                        anotherHead.y == joint.y
+                ) {
+                    if (i == 0) {
+                        return true;
+                    } else {
+                        joints.subList(i, joints.size()).clear();
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     void changeDirection(final Direction newDirection) {

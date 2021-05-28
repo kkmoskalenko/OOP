@@ -23,32 +23,26 @@ class Board {
             return;
         }
 
-        if (snake.checkCollision()) {
+        Snake[] allSnakes = new Snake[]{snake, randomSnake, greedySnake};
+
+        if (snake.checkCollision() || snake.handleBite(allSnakes)) {
             inGame = false;
             return;
         }
 
-        if (randomSnake.checkCollision()) {
+        if (randomSnake.checkCollision() || randomSnake.handleBite(allSnakes)) {
             randomSnake = new RandomSnake();
         }
 
-        if (greedySnake.checkCollision()) {
+        if (greedySnake.checkCollision() || greedySnake.handleBite(allSnakes)) {
             greedySnake = new GreedySnake();
         }
 
-        if (snake.checkCollision(apple)) {
-            snake.grow();
-            apple = new Apple();
-        }
-
-        if (randomSnake.checkCollision(apple)) {
-            randomSnake.grow();
-            apple = new Apple();
-        }
-
-        if (greedySnake.checkCollision(apple)) {
-            greedySnake.grow();
-            apple = new Apple();
+        for (Snake snake : allSnakes) {
+            if (snake.checkCollision(apple)) {
+                snake.grow();
+                apple = new Apple();
+            }
         }
 
         snake.move();
@@ -106,6 +100,6 @@ class Board {
     }
 
     int getScore() {
-        return snake.getLength() - Snake.INITIAL_LENGTH;
+        return Math.max(0, snake.getLength() - Snake.INITIAL_LENGTH);
     }
 }
