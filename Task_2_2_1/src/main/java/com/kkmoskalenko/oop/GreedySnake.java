@@ -2,7 +2,7 @@ package com.kkmoskalenko.oop;
 
 import javafx.scene.paint.Color;
 
-public class GreedySnake extends Snake {
+final class GreedySnake extends Snake {
     void move(final Apple apple) {
         Joint head = getHead();
 

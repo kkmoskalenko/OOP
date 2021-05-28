@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 
 import java.util.Random;
 
-public class RandomSnake extends Snake {
+final class RandomSnake extends Snake {
     private static final Random RANDOM = new Random();
     private static final Direction[] DIRECTIONS = Direction.values();
 
