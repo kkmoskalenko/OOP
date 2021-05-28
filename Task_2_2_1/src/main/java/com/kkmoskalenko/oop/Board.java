@@ -15,6 +15,9 @@ class Board {
     private Snake snake = new Snake();
     private Apple apple = new Apple();
 
+    private RandomSnake randomSnake = new RandomSnake();
+    private GreedySnake greedySnake = new GreedySnake();
+
     void handleTick() {
         if (!inGame) {
             return;
@@ -25,12 +28,32 @@ class Board {
             return;
         }
 
+        if (randomSnake.checkCollision()) {
+            randomSnake = new RandomSnake();
+        }
+
+        if (greedySnake.checkCollision()) {
+            greedySnake = new GreedySnake();
+        }
+
         if (snake.checkCollision(apple)) {
             snake.grow();
             apple = new Apple();
         }
 
+        if (randomSnake.checkCollision(apple)) {
+            randomSnake.grow();
+            apple = new Apple();
+        }
+
+        if (greedySnake.checkCollision(apple)) {
+            greedySnake.grow();
+            apple = new Apple();
+        }
+
         snake.move();
+        randomSnake.move();
+        greedySnake.move(apple);
     }
 
     void draw(final Canvas canvas) {
@@ -40,6 +63,8 @@ class Board {
         drawGrid(gc);
         apple.draw(gc);
         snake.draw(gc);
+        randomSnake.draw(gc);
+        greedySnake.draw(gc);
     }
 
     private static void drawGrid(final GraphicsContext gc) {

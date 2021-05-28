@@ -9,7 +9,7 @@ import java.util.List;
 class Snake {
     static final int INITIAL_LENGTH = 3;
 
-    private final List<Joint> joints = new ArrayList<>();
+    protected final List<Joint> joints = new ArrayList<>();
     private Direction direction = Direction.RIGHT;
 
     // Constants
@@ -20,6 +20,14 @@ class Snake {
         for (int i = 0; i < INITIAL_LENGTH; i++) {
             joints.add(new Joint(INITIAL_POSITION - i, INITIAL_POSITION));
         }
+    }
+
+    protected Color getHeadColor() {
+        return Color.DARKGREEN;
+    }
+
+    protected Color getBodyColor() {
+        return Color.FORESTGREEN;
     }
 
     void move() {
@@ -114,7 +122,7 @@ class Snake {
             Joint joint = joints.get(i);
             int size = Board.CELL_SIZE;
 
-            gc.setFill(i == 0 ? Color.DARKGREEN : Color.FORESTGREEN);
+            gc.setFill(i == 0 ? getHeadColor() : getBodyColor());
             gc.fillRect(joint.x * size, joint.y * size, size, size);
         }
     }
@@ -127,13 +135,21 @@ class Snake {
         UP, DOWN, LEFT, RIGHT
     }
 
-    private static class Joint {
+    protected static class Joint {
         private int x;
         private int y;
 
         Joint(final int x, final int y) {
             this.x = x;
             this.y = y;
+        }
+
+        protected int getX() {
+            return x;
+        }
+
+        protected int getY() {
+            return y;
         }
     }
 }
