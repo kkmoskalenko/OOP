@@ -6,6 +6,9 @@ class QueueContainer<T> {
     private final Integer capacity;
     private final ArrayDeque<T> queue;
 
+    private int blockedAdds = 0;
+    private int blockedGets = 0;
+
     QueueContainer() {
         this.capacity = null;
         this.queue = new ArrayDeque<>();
@@ -19,6 +22,7 @@ class QueueContainer<T> {
     synchronized void add(final T object) {
         while (capacity != null && queue.size() >= capacity) {
             try {
+                blockedAdds++;
                 wait();
             } catch (InterruptedException ignored) {
 
@@ -32,6 +36,7 @@ class QueueContainer<T> {
     synchronized T get(final boolean shouldExit) {
         while (queue.isEmpty()) {
             try {
+                blockedGets++;
                 wait();
                 if (shouldExit) {
                     return null;
@@ -48,5 +53,13 @@ class QueueContainer<T> {
 
     synchronized boolean isNotEmpty() {
         return !queue.isEmpty();
+    }
+
+    int getBlockedAdds() {
+        return blockedAdds;
+    }
+
+    int getBlockedGets() {
+        return blockedGets;
     }
 }
