@@ -1,0 +1,34 @@
+{
+  "bakers": [
+    {
+      "name": "Baker_1",
+      "experience": 7
+    },
+    {
+      "name": "Baker_2",
+      "experience": 38
+    },
+    {
+      "name": "Baker_3",
+      "experience": 95
+    },
+    {
+      "name": "Baker_4",
+      "experience": 78
+    },
+    {
+      "name": "Baker_5",
+      "experience": 98
+    }
+  ],
+  "deliverymen": [
+    {
+      "name": "Deliveryman_1",
+      "trunkCapacity": 4
+    },
+    {
+      "name": "Deliveryman_2",
+      "trunkCapacity": 3
+    }
+  ]
+}
