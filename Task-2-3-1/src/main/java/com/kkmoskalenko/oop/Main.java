@@ -27,14 +27,19 @@ final class Main {
         script.setDelegate(course);
         script.run();
 
-        System.out.println(course);
-
         for (Group group : course.getGroups()) {
             for (Student student : group.getStudents()) {
                 File cloneDir = student.cloneRepo();
                 System.out.println("Cloning the repository of "
                         + student.getName() + " to "
                         + cloneDir.getAbsolutePath());
+
+                for (Task task : course.getTasks()) {
+                    File taskDirectory = new File(cloneDir, task.getPath());
+                    boolean success = GradleUtils.build(taskDirectory);
+                    System.out.println("Building task " + task.getName()
+                            + " (build successful: " + success + ")");
+                }
             }
         }
     }
