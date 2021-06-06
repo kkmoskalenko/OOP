@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.IOException;
 
 final class GitUtils {
+    private GitUtils() {
+
+    }
+
     private static boolean deleteDirectory(
             final File directoryToBeDeleted
     ) {

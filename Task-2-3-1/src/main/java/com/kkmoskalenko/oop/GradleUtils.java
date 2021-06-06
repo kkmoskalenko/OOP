@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 final class GradleUtils {
+    private GradleUtils() {
+
+    }
+
     private static void execute(
             final File projectDir,
             final List<String> command,
@@ -91,6 +95,6 @@ final class GradleUtils {
     }
 
     private interface StringCallback {
-        void call(final String str);
+        void call(String str);
     }
 }

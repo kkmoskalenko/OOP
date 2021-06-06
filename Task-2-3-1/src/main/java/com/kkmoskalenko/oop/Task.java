@@ -8,11 +8,11 @@ class Task {
     private String path;
     private boolean shouldSkipTests = false;
 
-    void name(String name) {
+    void name(final String name) {
         this.name = name;
     }
 
-    void path(String path) {
+    void path(final String path) {
         this.path = path;
     }
 

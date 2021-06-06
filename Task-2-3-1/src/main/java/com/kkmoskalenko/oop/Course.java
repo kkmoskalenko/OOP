@@ -11,7 +11,7 @@ class Course {
     private final List<Group> groups = new ArrayList<>();
     private final List<Task> tasks = new ArrayList<>();
 
-    void group(String name, Closure<Void> closure) {
+    void group(final String name, final Closure<Void> closure) {
         Group group = new Group();
         group.setName(name);
         closure.setDelegate(group);
@@ -21,7 +21,7 @@ class Course {
         groups.add(group);
     }
 
-    void task(Closure<Void> closure) {
+    void task(final Closure<Void> closure) {
         Task task = new Task();
         closure.setDelegate(task);
         closure.setResolveStrategy(Closure.DELEGATE_ONLY);

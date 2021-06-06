@@ -11,7 +11,7 @@ class Group {
     private final List<Student> students = new ArrayList<>();
     private String name;
 
-    void student(Closure<Void> closure) {
+    void student(final Closure<Void> closure) {
         Student student = new Student();
         closure.setDelegate(student);
         closure.setResolveStrategy(Closure.DELEGATE_ONLY);

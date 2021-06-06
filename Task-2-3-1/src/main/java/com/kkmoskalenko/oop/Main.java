@@ -16,7 +16,7 @@ final class Main {
     }
 
     @SneakyThrows
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         CompilerConfiguration cc = new CompilerConfiguration();
         cc.setScriptBaseClass(DelegatingScript.class.getName());
 
