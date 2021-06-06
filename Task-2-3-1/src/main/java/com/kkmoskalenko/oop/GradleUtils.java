@@ -1,5 +1,10 @@
 package com.kkmoskalenko.oop;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +55,39 @@ final class GradleUtils {
         }
 
         return success.get();
+    }
+
+    static String test(final File projectDir) {
+        List<String> command = Arrays.asList("./gradlew", "test");
+
+        try {
+            execute(projectDir, command, (str) -> {
+                // Do nothing
+            });
+        } catch (IOException | InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+
+        File reportsDir = new File(projectDir, "build/test-results/test");
+        File[] reports = reportsDir.listFiles((dir, name) ->
+                name.startsWith("TEST") && name.endsWith(".xml"));
+        assert reports != null && reports.length > 0;
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(reports[0]);
+            Element el = doc.getDocumentElement();
+
+            int total = Integer.parseInt(el.getAttribute("tests"));
+            int failed = Integer.parseInt(el.getAttribute("failures"));
+
+            return String.format("%d/%d", total - failed, total);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return "TESTING FAILED";
     }
 
     private interface StringCallback {

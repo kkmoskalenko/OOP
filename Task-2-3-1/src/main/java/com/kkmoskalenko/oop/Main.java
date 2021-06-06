@@ -9,6 +9,7 @@ import java.io.File;
 
 final class Main {
     private static final String SCRIPT_FILENAME = "config.groovy";
+    private static final String TABLE_FORMAT = "    %-15s | %-5s | %-15s%n";
 
     private Main() {
 
@@ -28,17 +29,25 @@ final class Main {
         script.run();
 
         for (Group group : course.getGroups()) {
+            System.out.println("Results for group " + group.getName() + ":");
             for (Student student : group.getStudents()) {
-                File cloneDir = student.cloneRepo();
-                System.out.println("Cloning the repository of "
-                        + student.getName() + " to "
-                        + cloneDir.getAbsolutePath());
+                System.out.println("  Student " + student.getName());
+                System.out.format(TABLE_FORMAT, "Task", "Build", "Tests");
 
+                File cloneDir = student.cloneRepo();
                 for (Task task : course.getTasks()) {
                     File taskDirectory = new File(cloneDir, task.getPath());
-                    boolean success = GradleUtils.build(taskDirectory);
-                    System.out.println("Building task " + task.getName()
-                            + " (build successful: " + success + ")");
+                    boolean buildResult = GradleUtils.build(taskDirectory);
+
+                    String testResult;
+                    if (!task.isShouldSkipTests()) {
+                        testResult = GradleUtils.test(taskDirectory);
+                    } else {
+                        testResult = "TESTING SKIPPED";
+                    }
+
+                    System.out.format(TABLE_FORMAT, task.getName(),
+                            buildResult, testResult);
                 }
             }
         }
