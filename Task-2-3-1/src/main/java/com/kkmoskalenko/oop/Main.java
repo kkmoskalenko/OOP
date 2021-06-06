@@ -28,5 +28,14 @@ final class Main {
         script.run();
 
         System.out.println(course);
+
+        for (Group group : course.getGroups()) {
+            for (Student student : group.getStudents()) {
+                File cloneDir = student.cloneRepo();
+                System.out.println("Cloning the repository of "
+                        + student.getName() + " to "
+                        + cloneDir.getAbsolutePath());
+            }
+        }
     }
 }
